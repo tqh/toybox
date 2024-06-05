@@ -1,0 +1,33 @@
+name: toybox musl build
+on:
+  push:
+
+jobs:
+  musl-clang:
+    env:
+      CC: clang
+      CFLAGS: -static -nostdinc -nostdlib -nostdlib++ -nodefaultlibs -nostartfiles -isystem /usr/include/x86_64-linux-musl/ -isystem /usr/include/
+      LDFLAGS: -fuse-ld=lld -L/usr/lib/x86_64-linux-musl/ /usr/lib/x86_64-linux-musl/crt1.o -lc
+      DEBIAN_FRONTEND: noninteractive
+
+    runs-on: ubuntu-slim
+
+    defaults:
+      run:
+        shell: "bash -e {0}"
+
+    steps:
+      - uses: actions/checkout@v6
+      - name: Setup
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get -qq install build-essential clang lld musl-dev gcc-multilib
+      - name: Configure
+        run: make defconfig
+      - name: Build
+        run: make
+      - name: Test
+        env:
+          VERBOSE: all
+          USER: root
+        run: make tests
