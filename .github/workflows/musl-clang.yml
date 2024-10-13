@@ -21,7 +21,7 @@ jobs:
         shell: "bash -e {0}"
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Setup
         run: |
           apt-get -qq update
@@ -34,4 +34,4 @@ jobs:
         env:
           VERBOSE: all
           USER: root
-        run: script --return --quiet -c "make tests" /dev/null # To get color we wrap make tests
+        run: make tests
