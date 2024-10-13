@@ -24,7 +24,7 @@ QiPrkylDZYYRPFZQUFGmgRAFgwEygDC+o7xtv26GOcRFYzdlo2G5i0Yg1WxsQYQJJJhfrCP6DgGA
 VSH+LuSKcKEhYLXQkg==
 EOF
 
-tuncate -s360k fat.img; mkfs.fat fat.img; bzip2 < fat.img | base64
+truncate -s360k fat.img; mkfs.fat fat.img; bzip2 < fat.img | base64
 base64 -d | bzcat > fat.img << EOF
 QlpoOTFBWSZTWRzu2ngAC6j/v/C7YaDQITAEIwPHCTfv3CRAQAAUBAlAAkAABAhAC7AAu2oampqP
 SMgAGmmgAAM1AaZGE8oNU8lPU2piDQBoADQAGgaHpPUaBlIjaQAaAGgA0yaaMJk0Bo0KfAsgEkgE
