@@ -3,29 +3,25 @@ on:
   push:
 
 jobs:
-  debian-musl-clang17:
+  musl-clang:
     env:
-      CC: clang-17
+      CC: clang
       CFLAGS: -static -nostdinc -nostdlib -nostdlib++ -nodefaultlibs -nostartfiles -isystem /usr/include/x86_64-linux-musl/ -isystem /usr/include/
-      LDFLAGS: -fuse-ld=lld-17 -L/usr/lib/x86_64-linux-musl/ /usr/lib/x86_64-linux-musl/crt1.o -lc
+      LDFLAGS: -fuse-ld=lld -L/usr/lib/x86_64-linux-musl/ /usr/lib/x86_64-linux-musl/crt1.o -lc
       DEBIAN_FRONTEND: noninteractive
 
-    runs-on: ubuntu-latest
-
-    container:
-      image: debian:trixie
-      options: --privileged
+    runs-on: ubuntu-slim
 
     defaults:
       run:
         shell: "bash -e {0}"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Setup
         run: |
-          apt-get -qq update
-          apt-get -qq install build-essential clang-17 lld-17 musl-dev gcc-multilib
+          sudo apt-get -qq update
+          sudo apt-get -qq install build-essential clang lld musl-dev gcc-multilib
       - name: Configure
         run: make defconfig
       - name: Build
